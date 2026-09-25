@@ -1,0 +1,110 @@
+﻿"use client";
+
+import { useQuery } from "@tanstack/react-query";
+import { CircleDashed } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
+import { getTasks } from "@/lib/api/tasks";
+import type { Task, TaskStatus } from "@/types/api";
+
+const columns: Array<{ status: TaskStatus; label: string }> = [
+  { status: "TODO", label: "To Do" },
+  { status: "IN_PROGRESS", label: "In Progress" },
+  { status: "BLOCKED", label: "Blocked" },
+  { status: "DONE", label: "Done" },
+];
+
+export default function TasksPage() {
+  const query = useQuery({
+    queryKey: ["tasks", "board"],
+    queryFn: () =>
+      getTasks({
+        page: 1,
+        rows: 100,
+        orderKey: "updatedAt",
+        orderRule: "desc",
+      }),
+  });
+
+  const tasks = query.data?.data ?? [];
+
+  return (
+    <div className="px-4 py-4 sm:px-5 lg:px-6">
+      <div className="mx-auto max-w-[1400px]">
+        <section className="rounded-[20px] border border-slate-200 bg-white px-6 py-5 shadow-sm">
+          <div className="text-[10px] font-extrabold tracking-[0.16em] text-cyan-600">
+            TASK MANAGEMENT
+          </div>
+          <h1 className="mt-2 text-3xl font-semibold tracking-[-0.04em] text-slate-950">
+            Task Board
+          </h1>
+          <p className="mt-1.5 text-sm text-slate-500">
+            Dependency-aware task workspace.
+          </p>
+        </section>
+
+        {query.isPending ? (
+          <div className="mt-3 rounded-2xl border border-slate-200 bg-white p-10 text-center text-sm text-slate-500">
+            Loading task board...
+          </div>
+        ) : query.isError ? (
+          <div className="mt-3 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+            Unable to load tasks.
+          </div>
+        ) : (
+          <section className="mt-3 grid gap-3 xl:grid-cols-4">
+            {columns.map((column) => {
+              const scoped = tasks.filter(
+                (task) => task.status === column.status,
+              );
+
+              return (
+                <div key={column.status}>
+                  <div className="mb-2 flex items-center justify-between px-1">
+                    <div className="text-sm font-semibold text-slate-700">
+                      {column.label}
+                    </div>
+                    <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-semibold text-slate-500">
+                      {scoped.length}
+                    </span>
+                  </div>
+
+                  <div className="space-y-2">
+                    {scoped.length === 0 ? (
+                      <div className="rounded-2xl border border-dashed border-slate-200 bg-white/60 p-6 text-center text-xs text-slate-400">
+                        No tasks
+                      </div>
+                    ) : (
+                      scoped.map((task: Task) => (
+                        <Card
+                          key={task.id}
+                          className="border-slate-200 bg-white shadow-sm"
+                        >
+                          <CardContent className="p-4">
+                            <div className="flex gap-3">
+                              <CircleDashed className="mt-0.5 size-4 shrink-0 text-cyan-600" />
+                              <div className="min-w-0">
+                                <div className="text-sm font-semibold text-slate-900">
+                                  {task.title}
+                                </div>
+                                {task.description && (
+                                  <div className="mt-1 line-clamp-2 text-xs leading-5 text-slate-500">
+                                    {task.description}
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </section>
+        )}
+      </div>
+    </div>
+  );
+}
+

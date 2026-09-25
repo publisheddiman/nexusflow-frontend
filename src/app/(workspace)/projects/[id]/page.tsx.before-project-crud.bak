@@ -1,0 +1,106 @@
+﻿"use client";
+
+import { useQuery } from "@tanstack/react-query";
+import { ArrowLeft, FolderKanban } from "lucide-react";
+import Link from "next/link";
+import { useParams } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { getProjects } from "@/lib/api/projects";
+import { getTasks } from "@/lib/api/tasks";
+
+export default function ProjectDetailPage() {
+  const params = useParams<{ id: string }>();
+  const id = params.id;
+
+  const projectQuery = useQuery({
+    queryKey: ["project", id],
+    queryFn: () =>
+      getProjects({
+        page: 1,
+        rows: 1,
+        filters: { id },
+      }),
+  });
+
+  const tasksQuery = useQuery({
+    queryKey: ["project-tasks", id],
+    queryFn: () =>
+      getTasks({
+        page: 1,
+        rows: 100,
+        filters: { projectId: id },
+      }),
+  });
+
+  const project = projectQuery.data?.data[0] ?? null;
+  const tasks = tasksQuery.data?.data ?? [];
+  const completed = tasks.filter((task) => task.status === "DONE").length;
+  const blocked = tasks.filter((task) => task.status === "BLOCKED").length;
+  const progress =
+    tasks.length === 0 ? 0 : Math.round((completed / tasks.length) * 100);
+
+  return (
+    <div className="px-4 py-4 sm:px-5 lg:px-6">
+      <div className="mx-auto max-w-[1200px]">
+        <Button asChild variant="outline" size="sm">
+          <Link href="/dashboard">
+            <ArrowLeft className="size-4" />
+            Dashboard
+          </Link>
+        </Button>
+
+        {projectQuery.isPending ? (
+          <div className="mt-3 rounded-2xl border border-slate-200 bg-white p-10 text-center text-sm text-slate-500">
+            Loading project...
+          </div>
+        ) : !project ? (
+          <div className="mt-3 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+            Project not found.
+          </div>
+        ) : (
+          <>
+            <section className="mt-3 rounded-[20px] border border-slate-200 bg-white p-6 shadow-sm">
+              <div className="flex items-start gap-4">
+                <div className="flex size-11 items-center justify-center rounded-xl bg-cyan-50 text-cyan-600">
+                  <FolderKanban className="size-5" />
+                </div>
+
+                <div>
+                  <div className="text-[10px] font-extrabold tracking-[0.16em] text-cyan-600">
+                    PROJECT DETAIL
+                  </div>
+                  <h1 className="mt-2 text-3xl font-semibold tracking-[-0.04em] text-slate-950">
+                    {project.name}
+                  </h1>
+                  <p className="mt-2 text-sm leading-6 text-slate-500">
+                    {project.description || "No project description provided."}
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <section className="mt-3 grid gap-3 md:grid-cols-4">
+              {[
+                ["Tasks", tasks.length],
+                ["Completed", completed],
+                ["Blocked", blocked],
+                ["Progress", `${progress}%`],
+              ].map(([label, value]) => (
+                <Card key={label}>
+                  <CardContent className="p-4">
+                    <div className="text-xs text-slate-500">{label}</div>
+                    <div className="mt-1 text-2xl font-semibold text-slate-950">
+                      {value}
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </section>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+

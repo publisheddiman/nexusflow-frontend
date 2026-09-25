@@ -1,0 +1,21 @@
+﻿import { api } from "@/lib/api/client";
+import {
+  buildListParams,
+  type ListQuery,
+} from "@/lib/api/query";
+import type {
+  PaginatedResponse,
+  Task,
+} from "@/types/api";
+
+export async function getTasks(
+  query: ListQuery = {},
+) {
+  const response = await api.get<
+    PaginatedResponse<Task>
+  >("/tasks", {
+    params: buildListParams(query),
+  });
+
+  return response.data;
+}

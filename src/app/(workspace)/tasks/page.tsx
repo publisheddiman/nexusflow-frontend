@@ -1,0 +1,511 @@
+﻿"use client";
+
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  CheckCircle2,
+  CircleDashed,
+  Eye,
+  Filter,
+  FolderKanban,
+  Plus,
+  Search,
+  TriangleAlert,
+  UserRound,
+  X,
+} from "lucide-react";
+import { type FormEvent, useEffect, useMemo, useState } from "react";
+import { TaskDrawer } from "@/components/tasks/task-drawer";
+import { TaskFormModal } from "@/components/tasks/task-form-modal";
+import { Button } from "@/components/ui/button";
+import { getProjects, type ProjectRecord } from "@/lib/api/projects";
+import { getTasks, type TaskRecord } from "@/lib/api/tasks";
+import { useAuthStore } from "@/stores/auth-store";
+import type { TaskStatus } from "@/types/api";
+
+const columns: Array<{
+  status: TaskStatus;
+  label: string;
+  helper: string;
+}> = [
+  {
+    status: "TODO",
+    label: "To Do",
+    helper: "Ready for execution",
+  },
+  {
+    status: "IN_PROGRESS",
+    label: "In Progress",
+    helper: "Currently being worked",
+  },
+  {
+    status: "BLOCKED",
+    label: "Blocked",
+    helper: "Waiting on prerequisites",
+  },
+  {
+    status: "DONE",
+    label: "Done",
+    helper: "Completed delivery",
+  },
+];
+
+function departmentLabel(department?: string) {
+  if (!department) return "";
+
+  if (department === "UI_UX") {
+    return "UI / UX";
+  }
+
+  return department
+    .toLowerCase()
+    .replace(/\b\w/g, (letter) => letter.toUpperCase());
+}
+
+function statusTone(status: TaskStatus) {
+  if (status === "DONE") {
+    return {
+      dot: "bg-emerald-500",
+      icon: "text-emerald-600 bg-emerald-50",
+    };
+  }
+
+  if (status === "BLOCKED") {
+    return {
+      dot: "bg-amber-500",
+      icon: "text-amber-600 bg-amber-50",
+    };
+  }
+
+  if (status === "IN_PROGRESS") {
+    return {
+      dot: "bg-blue-500",
+      icon: "text-blue-600 bg-blue-50",
+    };
+  }
+
+  return {
+    dot: "bg-slate-400",
+    icon: "text-slate-500 bg-slate-100",
+  };
+}
+
+export default function TasksPage() {
+  const user = useAuthStore((state) => state.user);
+  const queryClient = useQueryClient();
+
+  const [projectFilter, setProjectFilter] = useState("");
+  const [searchInput, setSearchInput] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
+  const [createOpen, setCreateOpen] = useState(false);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+
+    const projectId = params.get("project");
+
+    const taskId = params.get("task");
+
+    if (projectId) {
+      setProjectFilter(projectId);
+    }
+
+    if (taskId) {
+      setSelectedTaskId(taskId);
+    }
+  }, []);
+
+  const projectsQuery = useQuery({
+    queryKey: ["projects", "task-board"],
+    queryFn: () =>
+      getProjects({
+        page: 1,
+        rows: 100,
+        orderKey: "createdAt",
+        orderRule: "desc",
+      }),
+  });
+
+  const tasksQuery = useQuery({
+    queryKey: ["tasks", "board", projectFilter, searchTerm],
+    queryFn: () =>
+      getTasks({
+        page: 1,
+        rows: 100,
+        orderKey: "updatedAt",
+        orderRule: "desc",
+        ...(projectFilter
+          ? {
+              filters: {
+                projectId: projectFilter,
+              },
+            }
+          : {}),
+        ...(searchTerm
+          ? {
+              searchFilters: {
+                title: searchTerm,
+                description: searchTerm,
+              },
+            }
+          : {}),
+      }),
+  });
+
+  if (!user) return null;
+
+  const projects = projectsQuery.data?.data ?? [];
+  const tasks = tasksQuery.data?.data ?? [];
+
+  const projectMap = new Map(projects.map((project) => [project.id, project]));
+
+  const statistics = useMemo(
+    () => ({
+      total: tasks.length,
+      active: tasks.filter((task) => task.status === "IN_PROGRESS").length,
+      blocked: tasks.filter((task) => task.status === "BLOCKED").length,
+      done: tasks.filter((task) => task.status === "DONE").length,
+    }),
+    [tasks],
+  );
+
+  function applySearch(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setSearchTerm(searchInput.trim());
+  }
+
+  function clearSearch() {
+    setSearchInput("");
+    setSearchTerm("");
+  }
+
+  function replaceQuery(mutator: (url: URL) => void) {
+    const url = new URL(window.location.href);
+
+    mutator(url);
+
+    window.history.replaceState(null, "", `${url.pathname}${url.search}`);
+  }
+
+  function changeProject(value: string) {
+    setProjectFilter(value);
+
+    replaceQuery((url) => {
+      if (value) {
+        url.searchParams.set("project", value);
+      } else {
+        url.searchParams.delete("project");
+      }
+    });
+  }
+
+  function openTask(taskId: string) {
+    setSelectedTaskId(taskId);
+
+    replaceQuery((url) => {
+      url.searchParams.set("task", taskId);
+    });
+  }
+
+  function closeTask() {
+    setSelectedTaskId(null);
+
+    replaceQuery((url) => {
+      url.searchParams.delete("task");
+    });
+  }
+
+  async function refreshBoard() {
+    await Promise.all([
+      queryClient.invalidateQueries({
+        queryKey: ["tasks"],
+      }),
+      queryClient.invalidateQueries({
+        queryKey: ["projects"],
+      }),
+    ]);
+  }
+
+  return (
+    <div className="px-4 py-5 sm:px-5 lg:px-7 lg:py-7">
+      <div className="mx-auto max-w-[1600px]">
+        <section className="rounded-[22px] border border-slate-200/80 bg-white px-5 py-5 shadow-sm sm:px-6">
+          <div className="flex flex-col gap-5 xl:flex-row xl:items-end xl:justify-between">
+            <div>
+              <div className="text-[10px] font-extrabold tracking-[0.17em] text-cyan-600">
+                TASK MANAGEMENT
+              </div>
+
+              <h1 className="mt-2 text-3xl font-semibold tracking-[-0.04em] text-slate-950">
+                Task Board
+              </h1>
+
+              <p className="mt-1.5 max-w-xl text-sm leading-6 text-slate-500">
+                Dependency-aware engineering workflow with role-based state
+                controls and concurrency protection.
+              </p>
+            </div>
+
+            <div className="flex flex-wrap gap-2">
+              <div className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-medium text-slate-600">
+                {tasksQuery.isPending
+                  ? "Loading..."
+                  : `${statistics.total} visible tasks`}
+              </div>
+
+              {user.role === "PM" && (
+                <Button type="button" onClick={() => setCreateOpen(true)}>
+                  <Plus className="size-4" />
+                  New Task
+                </Button>
+              )}
+            </div>
+          </div>
+
+          <div className="mt-5 grid gap-2 sm:grid-cols-3">
+            <div className="rounded-xl bg-blue-50/70 px-3 py-2.5">
+              <div className="text-[10px] font-bold uppercase tracking-[0.12em] text-blue-500">
+                In Progress
+              </div>
+              <div className="mt-1 text-lg font-semibold text-blue-800">
+                {tasksQuery.isPending ? "â€”" : statistics.active}
+              </div>
+            </div>
+
+            <div className="rounded-xl bg-amber-50/70 px-3 py-2.5">
+              <div className="text-[10px] font-bold uppercase tracking-[0.12em] text-amber-500">
+                Blocked
+              </div>
+              <div className="mt-1 text-lg font-semibold text-amber-800">
+                {tasksQuery.isPending ? "â€”" : statistics.blocked}
+              </div>
+            </div>
+
+            <div className="rounded-xl bg-emerald-50/70 px-3 py-2.5">
+              <div className="text-[10px] font-bold uppercase tracking-[0.12em] text-emerald-500">
+                Done
+              </div>
+              <div className="mt-1 text-lg font-semibold text-emerald-800">
+                {tasksQuery.isPending ? "â€”" : statistics.done}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="mt-3 rounded-[18px] border border-slate-200/80 bg-white p-3 shadow-sm">
+          <div className="flex flex-col gap-2 xl:flex-row">
+            <div className="flex min-w-0 flex-1 items-center gap-2">
+              <div className="flex h-10 items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3">
+                <Filter className="size-4 shrink-0 text-slate-400" />
+
+                <select
+                  value={projectFilter}
+                  onChange={(event) => changeProject(event.target.value)}
+                  className="min-w-[180px] bg-transparent text-xs font-medium text-slate-700 outline-none"
+                >
+                  <option value="">All projects</option>
+
+                  {projects.map((project) => (
+                    <option key={project.id} value={project.id}>
+                      {project.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {projectFilter && (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => changeProject("")}
+                >
+                  <X className="size-3.5" />
+                  Clear project
+                </Button>
+              )}
+            </div>
+
+            <form
+              onSubmit={applySearch}
+              className="flex min-w-0 gap-2 xl:w-[440px]"
+            >
+              <div className="relative min-w-0 flex-1">
+                <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate-400" />
+
+                <input
+                  value={searchInput}
+                  onChange={(event) => setSearchInput(event.target.value)}
+                  placeholder="Search task title or description..."
+                  className="h-10 w-full rounded-xl border border-slate-200 bg-slate-50 pl-9 pr-3 text-xs text-slate-700 outline-none transition focus:border-cyan-400 focus:bg-white focus:ring-4 focus:ring-cyan-500/10"
+                />
+              </div>
+
+              <Button type="submit" size="sm" className="h-10">
+                Search
+              </Button>
+
+              {searchTerm && (
+                <Button
+                  type="button"
+                  size="sm"
+                  variant="outline"
+                  className="h-10"
+                  onClick={clearSearch}
+                >
+                  Clear
+                </Button>
+              )}
+            </form>
+          </div>
+        </section>
+
+        {tasksQuery.isError ? (
+          <div className="mt-3 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+            Unable to load task board.
+          </div>
+        ) : tasksQuery.isPending ? (
+          <section className="mt-3 grid gap-3 xl:grid-cols-4">
+            {[1, 2, 3, 4].map((item) => (
+              <div
+                key={item}
+                className="h-[380px] animate-pulse rounded-[20px] border border-slate-200 bg-white"
+              />
+            ))}
+          </section>
+        ) : (
+          <section className="mt-3 grid items-start gap-3 xl:grid-cols-4">
+            {columns.map((column) => {
+              const scoped = tasks.filter(
+                (task) => task.status === column.status,
+              );
+
+              const tone = statusTone(column.status);
+
+              return (
+                <div
+                  key={column.status}
+                  className="rounded-[20px] border border-slate-200/80 bg-slate-50/70 p-2.5"
+                >
+                  <div className="flex items-start justify-between px-1.5 py-2">
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className={`size-2 rounded-full ${tone.dot}`} />
+                        <h2 className="text-sm font-semibold text-slate-800">
+                          {column.label}
+                        </h2>
+                      </div>
+
+                      <p className="mt-1 text-[10px] text-slate-400">
+                        {column.helper}
+                      </p>
+                    </div>
+
+                    <span className="rounded-full bg-white px-2 py-0.5 text-[10px] font-bold text-slate-500 shadow-sm ring-1 ring-slate-200">
+                      {scoped.length}
+                    </span>
+                  </div>
+
+                  <div className="space-y-2">
+                    {scoped.length === 0 ? (
+                      <div className="rounded-2xl border border-dashed border-slate-200 bg-white/70 px-3 py-8 text-center text-xs text-slate-400">
+                        No tasks
+                      </div>
+                    ) : (
+                      scoped.map((task: TaskRecord) => {
+                        const project =
+                          task.project ?? projectMap.get(task.projectId);
+
+                        return (
+                          <button
+                            type="button"
+                            key={task.id}
+                            onClick={() => openTask(task.id)}
+                            className="w-full rounded-2xl border border-slate-200 bg-white p-3.5 text-left shadow-sm transition duration-200 hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md"
+                          >
+                            <div className="flex items-start justify-between gap-3">
+                              <div
+                                className={`flex size-8 shrink-0 items-center justify-center rounded-lg ${tone.icon}`}
+                              >
+                                {column.status === "DONE" ? (
+                                  <CheckCircle2 className="size-4" />
+                                ) : column.status === "BLOCKED" ? (
+                                  <TriangleAlert className="size-4" />
+                                ) : (
+                                  <CircleDashed className="size-4" />
+                                )}
+                              </div>
+
+                              {task.isClientVisible && (
+                                <Eye className="size-3.5 shrink-0 text-cyan-500" />
+                              )}
+                            </div>
+
+                            <h3 className="mt-3 line-clamp-2 text-sm font-semibold leading-5 text-slate-900">
+                              {task.title}
+                            </h3>
+
+                            {task.description && (
+                              <p className="mt-1.5 line-clamp-2 text-[11px] leading-4 text-slate-500">
+                                {task.description}
+                              </p>
+                            )}
+
+                            {project && (
+                              <div className="mt-3 flex items-center gap-1.5 text-[10px] font-medium text-slate-400">
+                                <FolderKanban className="size-3" />
+                                <span className="truncate">{project.name}</span>
+                              </div>
+                            )}
+
+                            {user.role !== "CLIENT" && (
+                              <div className="mt-3 flex flex-wrap gap-1.5">
+                                {task.department && (
+                                  <span className="rounded-full bg-slate-100 px-2 py-1 text-[9px] font-bold text-slate-500">
+                                    {departmentLabel(task.department)}
+                                  </span>
+                                )}
+
+                                {task.assignee?.name && (
+                                  <span className="flex max-w-full items-center gap-1 rounded-full bg-cyan-50 px-2 py-1 text-[9px] font-semibold text-cyan-700">
+                                    <UserRound className="size-2.5" />
+                                    <span className="truncate">
+                                      {task.assignee.name}
+                                    </span>
+                                  </span>
+                                )}
+                              </div>
+                            )}
+                          </button>
+                        );
+                      })
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </section>
+        )}
+      </div>
+
+      {createOpen && user.role === "PM" && (
+        <TaskFormModal
+          mode="create"
+          projects={projects as ProjectRecord[]}
+          defaultProjectId={projectFilter}
+          onClose={() => setCreateOpen(false)}
+          onSaved={refreshBoard}
+        />
+      )}
+
+      {selectedTaskId && (
+        <TaskDrawer
+          taskId={selectedTaskId}
+          user={user}
+          projects={projects as ProjectRecord[]}
+          onClose={closeTask}
+          onChanged={refreshBoard}
+        />
+      )}
+    </div>
+  );
+}
