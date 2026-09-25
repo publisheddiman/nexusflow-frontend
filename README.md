@@ -1,36 +1,238 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# NodeWave Frontend
 
-## Getting Started
+Frontend application for NodeWave Fullstack Engineer Assessment.
 
-First, run the development server:
+This application provides the user interface for project management
+workflow with authentication, task management, dependency visualization,
+and client-facing project visibility.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Live Application
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Frontend:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+https://nodewave-fullstack-frontend.vercel.app
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Backend API:
 
-## Learn More
+https://nodewave-fullstack-backend-production.up.railway.app
 
-To learn more about Next.js, take a look at the following resources:
+## Repository
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Frontend Repository:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+https://github.com/publisheddiman/nodewave-fullstack-frontend
 
-## Deploy on Vercel
+Backend Repository:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+https://github.com/publisheddiman/nodewave-fullstack-backend
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# Technology Stack
+
+## Core
+
+-   Next.js 16 App Router
+-   React 19
+-   TypeScript Strict Mode
+-   Tailwind CSS 4
+
+## State Management
+
+-   TanStack Query 5
+-   Zustand 5
+
+## Form and Validation
+
+-   React Hook Form
+-   Zod
+
+## UI
+
+-   Tailwind CSS
+-   Radix UI / shadcn components
+
+# Application Features
+
+## Authentication
+
+Implemented:
+
+-   Login
+-   Protected routes
+-   JWT session handling
+-   Role-based interface rendering
+
+Supported accounts:
+
+## Product Manager
+
+Email:
+
+pm@nodewave.local
+
+## UI/UX Engineer
+
+Email:
+
+uiux@nodewave.local
+
+## Frontend Engineer
+
+Email:
+
+frontend@nodewave.local
+
+## Backend Engineer
+
+Email:
+
+backend@nodewave.local
+
+## Client Guest
+
+Email:
+
+client@nodewave.local
+
+Password:
+
+Password123!
+
+# User Interface Access
+
+## PM Dashboard
+
+Features:
+
+-   View project overview
+-   Manage tasks
+-   View task dependencies
+-   Monitor project progress
+
+## Internal Team Dashboard
+
+Features:
+
+-   View assigned tasks
+-   Update task status
+-   Upload attachments
+
+Restrictions:
+
+-   Cannot modify task descriptions
+-   Cannot access unrelated tasks
+
+## Client Dashboard
+
+Features:
+
+-   View owned projects
+-   View project metrics
+-   View client-visible tasks
+
+Hidden data:
+
+-   Engineer identity
+-   Department information
+-   Internal comments
+
+# Backend Integration
+
+The frontend communicates with the Hono backend API through:
+
+Environment variable:
+
+    NEXT_PUBLIC_BE_URL
+
+Example:
+
+    NEXT_PUBLIC_BE_URL=https://nodewave-fullstack-backend-production.up.railway.app
+
+# Project Structure
+
+    src/
+    |
+    ├── app/
+    |   ├── login/
+    |   ├── dashboard/
+    |
+    ├── components/
+    |
+    ├── hooks/
+    |
+    ├── lib/
+    |   ├── axios.ts
+    |
+    ├── stores/
+    |
+    └── services/
+
+# Deployment
+
+Platform:
+
+Vercel
+
+Deployment flow:
+
+    GitHub Repository
+
+            |
+
+    Vercel Build
+
+            |
+
+    Production Deployment
+
+            |
+
+    Frontend Connected To Railway API
+
+# Screenshots
+
+Add screenshots:
+
+1.  Login page
+2.  PM Task Board
+3.  Blocked dependency state
+4.  Client dashboard
+
+# Demo Flow
+
+The demo covers:
+
+1.  User authentication
+2.  PM task management
+3.  Dependency blocking behavior
+4.  Client data isolation
+5.  Role-based access control
+
+# Development
+
+Install dependencies:
+
+    bun install
+
+Run development server:
+
+    bun dev
+
+Build production:
+
+    bun run build
+
+Start production:
+
+    bun start
+
+# Assessment Submission
+
+NodeWave Fullstack Engineer Assessment
+
+Frontend:
+
+https://github.com/publisheddiman/nodewave-fullstack-frontend
+
+Backend:
+
+https://github.com/publisheddiman/nodewave-fullstack-backend
