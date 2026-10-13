@@ -39,7 +39,7 @@ export default function LoginPage() {
   } = useForm<LoginValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: "pm@NEXUSFLOW.local",
+      email: "pm@nodewave.local",
       password: "Password123!",
     },
   });
