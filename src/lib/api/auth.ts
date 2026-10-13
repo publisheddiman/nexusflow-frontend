@@ -1,4 +1,4 @@
-﻿import { api } from "@/lib/api/client";
+import { api } from "@/lib/api/client";
 import type { ApiResponse, LoginResponse, User } from "@/types/api";
 
 export type LoginInput = {
@@ -31,3 +31,4 @@ export async function registerRequest(input: RegisterInput) {
 export async function logoutRequest() {
   await api.post("/auth/logout");
 }
+

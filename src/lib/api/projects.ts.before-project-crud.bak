@@ -1,4 +1,4 @@
-﻿import { api } from "@/lib/api/client";
+import { api } from "@/lib/api/client";
 import {
   buildListParams,
   type ListQuery,
@@ -19,3 +19,4 @@ export async function getProjects(
 
   return response.data;
 }
+

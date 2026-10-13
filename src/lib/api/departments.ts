@@ -1,4 +1,4 @@
-﻿import { api } from "@/lib/api/client";
+import { api } from "@/lib/api/client";
 
 export type Department = {
   id: string;
@@ -13,3 +13,4 @@ export async function getDepartments() {
 
   return response.data.data;
 }
+

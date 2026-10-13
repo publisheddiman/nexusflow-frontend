@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
@@ -164,7 +164,7 @@ export function ProjectFormModal({
             </label>
             <Input
               id="project-name"
-              placeholder="e.g. NodeWave Client Portal"
+              placeholder="e.g. NexusFlow Client Portal"
               {...register("name")}
             />
             {errors.name && (
@@ -207,7 +207,7 @@ export function ProjectFormModal({
                 <option value="">Select client</option>
                 {clients.map((client) => (
                   <option key={client.id} value={client.id}>
-                    {client.name} Â· {client.email}
+                    {client.name} · {client.email}
                   </option>
                 ))}
               </select>
@@ -307,3 +307,4 @@ export function ProjectFormModal({
     </div>
   );
 }
+

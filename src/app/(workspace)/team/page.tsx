@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useQuery } from "@tanstack/react-query";
 import { Layers3, UserRoundCheck, Users } from "lucide-react";
@@ -132,3 +132,4 @@ export default function TeamPage() {
     </main>
   );
 }
+

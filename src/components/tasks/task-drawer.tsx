@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
@@ -62,7 +62,7 @@ const STATUS_OPTIONS: Array<{
 ];
 
 function formatDepartment(value?: string) {
-  if (!value) return "â€”";
+  if (!value) return "—";
 
   if (value === "UI_UX") {
     return "UI / UX";
@@ -493,7 +493,7 @@ export function TaskDrawer({
                             {dependency.status.replaceAll("_", " ")}
 
                             {dependency.department
-                              ? ` Â· ${formatDepartment(dependency.department)}`
+                              ? ` · ${formatDepartment(dependency.department)}`
                               : ""}
                           </div>
                         </div>
@@ -525,7 +525,7 @@ export function TaskDrawer({
 
                       {candidates.map((candidate) => (
                         <option key={candidate.id} value={candidate.id}>
-                          {candidate.title} Â·{" "}
+                          {candidate.title} ·{" "}
                           {candidate.status.replaceAll("_", " ")}
                         </option>
                       ))}
@@ -643,3 +643,4 @@ export function TaskDrawer({
     </>
   );
 }
+

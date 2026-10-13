@@ -596,3 +596,4 @@ export function TaskCollaboration({ taskId, user, taskAssigneeId }: Props) {
     </>
   );
 }
+

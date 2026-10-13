@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -45,7 +45,7 @@ function formatDate(value: string) {
 
 function displayValue(value: string | null) {
   if (value === null || value === "") {
-    return "Ã¢â‚¬â€";
+    return "â€”";
   }
 
   return value;
@@ -235,7 +235,7 @@ export default function ActivityPage() {
                 Visible Entries
               </div>
               <div className="mt-1 text-lg font-semibold text-cyan-900">
-                {query.isPending ? "Ã¢â‚¬â€" : logs.length}
+                {query.isPending ? "â€”" : logs.length}
               </div>
             </div>
 
@@ -244,7 +244,7 @@ export default function ActivityPage() {
                 Actors on Page
               </div>
               <div className="mt-1 text-lg font-semibold text-blue-900">
-                {query.isPending ? "Ã¢â‚¬â€" : uniqueUsers}
+                {query.isPending ? "â€”" : uniqueUsers}
               </div>
             </div>
 
@@ -253,7 +253,7 @@ export default function ActivityPage() {
                 Tasks on Page
               </div>
               <div className="mt-1 text-lg font-semibold text-violet-900">
-                {query.isPending ? "Ã¢â‚¬â€" : uniqueTasks}
+                {query.isPending ? "â€”" : uniqueTasks}
               </div>
             </div>
           </div>
@@ -489,3 +489,4 @@ export default function ActivityPage() {
     </div>
   );
 }
+

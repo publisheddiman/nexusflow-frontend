@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import {
   Activity,
@@ -91,7 +91,7 @@ export function WorkspaceShell({ children }: WorkspaceShellProps) {
         </div>
         <div>
           <div className="text-xs font-bold tracking-[0.2em] text-cyan-300">
-            NODEWAVE
+            NexusFlow
           </div>
           <div className="text-xs text-slate-400">Project Operations</div>
         </div>
@@ -240,3 +240,4 @@ export function WorkspaceShell({ children }: WorkspaceShellProps) {
     </div>
   );
 }
+

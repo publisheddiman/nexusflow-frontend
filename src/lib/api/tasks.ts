@@ -1,4 +1,4 @@
-﻿import { api } from "@/lib/api/client";
+import { api } from "@/lib/api/client";
 import { buildListParams, type ListQuery } from "@/lib/api/query";
 import type { PaginatedResponse, TaskStatus } from "@/types/api";
 
@@ -178,3 +178,4 @@ export async function removeTaskDependency(
 
   return response.data.data;
 }
+

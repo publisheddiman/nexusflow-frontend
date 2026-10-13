@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
@@ -39,7 +39,7 @@ export default function LoginPage() {
   } = useForm<LoginValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: "pm@nodewave.local",
+      email: "pm@NexusFlow.local",
       password: "Password123!",
     },
   });
@@ -290,10 +290,11 @@ export default function LoginPage() {
           </Card>
 
           <p className="mt-6 text-center text-xs text-slate-400">
-            NEXUSFLOW Project Operations · Secure Workspace
+            NEXUSFLOW Project Operations � Secure Workspace
           </p>
         </div>
       </section>
     </main>
   );
 }
+

@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import {
   useQuery,
@@ -72,7 +72,7 @@ const STATUS_OPTIONS: Array<{
 function formatDepartment(
   value?: string,
 ) {
-  if (!value) return "â€”";
+  if (!value) return "—";
 
   if (value === "UI_UX") {
     return "UI / UX";
@@ -674,7 +674,7 @@ export function TaskDrawer({
                               )}
 
                               {dependency.department
-                                ? ` Â· ${formatDepartment(
+                                ? ` · ${formatDepartment(
                                     dependency.department,
                                   )}`
                                 : ""}
@@ -741,7 +741,7 @@ export function TaskDrawer({
                             {
                               candidate.title
                             }{" "}
-                            Â·{" "}
+                            ·{" "}
                             {candidate.status.replaceAll(
                               "_",
                               " ",
@@ -890,4 +890,5 @@ export function TaskDrawer({
     </>
   );
 }
+
 

@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useQuery } from "@tanstack/react-query";
 import { CircleDashed } from "lucide-react";
@@ -107,4 +107,5 @@ export default function TasksPage() {
     </div>
   );
 }
+
 

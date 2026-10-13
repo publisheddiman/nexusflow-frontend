@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
@@ -30,7 +30,7 @@ export const useAuthStore = create<AuthState>()(
       setHydrated: (value) => set({ hydrated: value }),
     }),
     {
-      name: "nodewave-auth",
+      name: "NexusFlow-auth",
       partialize: (state) => ({
         token: state.token,
         user: state.user,
@@ -41,3 +41,4 @@ export const useAuthStore = create<AuthState>()(
     },
   ),
 );
+

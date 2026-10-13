@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -71,7 +71,7 @@ export default function RegisterPage() {
               </div>
 
               <div>
-                <div className="text-xl font-semibold text-white">NodeWave</div>
+                <div className="text-xl font-semibold text-white">NexusFlow</div>
                 <div className="text-sm text-slate-400">Project Operations</div>
               </div>
             </div>
@@ -213,3 +213,4 @@ export default function RegisterPage() {
     </main>
   );
 }
+

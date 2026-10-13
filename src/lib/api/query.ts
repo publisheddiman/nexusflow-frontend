@@ -1,4 +1,4 @@
-﻿export type FilterValue = string | number | boolean | null;
+export type FilterValue = string | number | boolean | null;
 
 export type ListQuery = {
   filters?: Record<string, FilterValue | FilterValue[]>;
@@ -47,3 +47,4 @@ export function buildListParams(query: ListQuery = {}) {
 
   return params;
 }
+

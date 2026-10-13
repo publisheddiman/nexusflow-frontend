@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQuery } from "@tanstack/react-query";
@@ -313,7 +313,7 @@ export function TaskFormModal({
 
                 {members.map((member) => (
                   <option key={member.user.id} value={member.user.id}>
-                    {member.user.name} Â· {member.user.email}
+                    {member.user.name} · {member.user.email}
                   </option>
                 ))}
               </select>
@@ -375,3 +375,4 @@ export function TaskFormModal({
     </div>
   );
 }
+

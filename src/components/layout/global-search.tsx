@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useQuery } from "@tanstack/react-query";
 import { FolderKanban, ListTodo, Search, X } from "lucide-react";
@@ -171,3 +171,4 @@ export function GlobalSearch() {
     </div>
   );
 }
+

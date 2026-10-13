@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
@@ -268,7 +268,7 @@ export default function TasksPage() {
                 In Progress
               </div>
               <div className="mt-1 text-lg font-semibold text-blue-800">
-                {tasksQuery.isPending ? "â€”" : statistics.active}
+                {tasksQuery.isPending ? "—" : statistics.active}
               </div>
             </div>
 
@@ -277,7 +277,7 @@ export default function TasksPage() {
                 Blocked
               </div>
               <div className="mt-1 text-lg font-semibold text-amber-800">
-                {tasksQuery.isPending ? "â€”" : statistics.blocked}
+                {tasksQuery.isPending ? "—" : statistics.blocked}
               </div>
             </div>
 
@@ -286,7 +286,7 @@ export default function TasksPage() {
                 Done
               </div>
               <div className="mt-1 text-lg font-semibold text-emerald-800">
-                {tasksQuery.isPending ? "â€”" : statistics.done}
+                {tasksQuery.isPending ? "—" : statistics.done}
               </div>
             </div>
           </div>
@@ -509,3 +509,4 @@ export default function TasksPage() {
     </div>
   );
 }
+

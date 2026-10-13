@@ -1,4 +1,4 @@
-﻿import axios from "axios";
+import axios from "axios";
 import { useAuthStore } from "@/stores/auth-store";
 
 export const api = axios.create({
@@ -28,3 +28,4 @@ api.interceptors.response.use(
     return Promise.reject(error);
   },
 );
+

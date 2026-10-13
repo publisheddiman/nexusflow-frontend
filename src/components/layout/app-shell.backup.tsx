@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import {
   Activity,
@@ -146,7 +146,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           </div>
 
           <div>
-            <div className="text-sm font-semibold text-white">NodeWave</div>
+            <div className="text-sm font-semibold text-white">NexusFlow</div>
             <div className="text-xs text-slate-500">Workspace</div>
           </div>
         </div>
@@ -491,3 +491,4 @@ export function AppShell({ children }: { children: ReactNode }) {
     </div>
   );
 }
+

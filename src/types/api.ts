@@ -1,4 +1,4 @@
-﻿export type UserRole = "PM" | "INTERNAL" | "CLIENT";
+export type UserRole = "PM" | "INTERNAL" | "CLIENT";
 
 export type User = {
   id: string;
@@ -56,3 +56,4 @@ export type PaginatedResponse<T> = {
   data: T[];
   pagination: Pagination;
 };
+

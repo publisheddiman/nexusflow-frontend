@@ -1,4 +1,4 @@
-﻿import { api } from "@/lib/api/client";
+import { api } from "@/lib/api/client";
 import { buildListParams, type ListQuery } from "@/lib/api/query";
 import type { PaginatedResponse, Project } from "@/types/api";
 
@@ -112,3 +112,4 @@ export async function getProjectMetrics(projectId: string) {
 
   return response.data.data;
 }
+

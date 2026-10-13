@@ -1,4 +1,4 @@
-﻿import { api } from "@/lib/api/client";
+import { api } from "@/lib/api/client";
 
 export type TeamUser = {
   id: string;
@@ -21,3 +21,4 @@ export async function getUsers() {
 
   return response.data.data;
 }
+
