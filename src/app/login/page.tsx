@@ -290,7 +290,7 @@ export default function LoginPage() {
           </Card>
 
           <p className="mt-6 text-center text-xs text-slate-400">
-            NEXUSFLOW Project Operations · Secure Workspace
+            NEXUSFLOW Project Operations Â· Secure Workspace
           </p>
         </div>
       </section>
