@@ -1,6 +1,6 @@
-# NodeWave Frontend
+﻿# NexusFlow Frontend
 
-Frontend application for NodeWave Fullstack Engineer Assessment.
+Frontend application for NexusFlow Fullstack Engineer Assessment.
 
 This application provides the user interface for project management
 workflow with authentication, task management, dependency visualization,
@@ -10,21 +10,21 @@ and client-facing project visibility.
 
 Frontend:
 
-https://nodewave-fullstack-frontend.vercel.app
+https://NexusFlow-fullstack-frontend.vercel.app
 
 Backend API:
 
-https://nodewave-fullstack-backend-production.up.railway.app
+https://NexusFlow-fullstack-backend-production.up.railway.app
 
 ## Repository
 
 Frontend Repository:
 
-https://github.com/publisheddiman/nodewave-fullstack-frontend
+https://github.com/publisheddiman/NexusFlow-fullstack-frontend
 
 Backend Repository:
 
-https://github.com/publisheddiman/nodewave-fullstack-backend
+https://github.com/publisheddiman/NexusFlow-fullstack-backend
 
 # Technology Stack
 
@@ -67,31 +67,31 @@ Supported accounts:
 
 Email:
 
-pm@nodewave.local
+pm@NexusFlow.local
 
 ## UI/UX Engineer
 
 Email:
 
-uiux@nodewave.local
+uiux@NexusFlow.local
 
 ## Frontend Engineer
 
 Email:
 
-frontend@nodewave.local
+frontend@NexusFlow.local
 
 ## Backend Engineer
 
 Email:
 
-backend@nodewave.local
+backend@NexusFlow.local
 
 ## Client Guest
 
 Email:
 
-client@nodewave.local
+client@NexusFlow.local
 
 Password:
 
@@ -145,26 +145,26 @@ Environment variable:
 
 Example:
 
-    NEXT_PUBLIC_BE_URL=https://nodewave-fullstack-backend-production.up.railway.app
+    NEXT_PUBLIC_BE_URL=https://NexusFlow-fullstack-backend-production.up.railway.app
 
 # Project Structure
 
     src/
     |
-    ├── app/
-    |   ├── login/
-    |   ├── dashboard/
+    â”œâ”€â”€ app/
+    |   â”œâ”€â”€ login/
+    |   â”œâ”€â”€ dashboard/
     |
-    ├── components/
+    â”œâ”€â”€ components/
     |
-    ├── hooks/
+    â”œâ”€â”€ hooks/
     |
-    ├── lib/
-    |   ├── axios.ts
+    â”œâ”€â”€ lib/
+    |   â”œâ”€â”€ axios.ts
     |
-    ├── stores/
+    â”œâ”€â”€ stores/
     |
-    └── services/
+    â””â”€â”€ services/
 
 # Deployment
 
@@ -227,12 +227,13 @@ Start production:
 
 # Assessment Submission
 
-NodeWave Fullstack Engineer Assessment
+NexusFlow Fullstack Engineer Assessment
 
 Frontend:
 
-https://github.com/publisheddiman/nodewave-fullstack-frontend
+https://github.com/publisheddiman/NexusFlow-fullstack-frontend
 
 Backend:
 
-https://github.com/publisheddiman/nodewave-fullstack-backend
+https://github.com/publisheddiman/NexusFlow-fullstack-backend
+
