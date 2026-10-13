@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "NodeWave Project Operations",
-  description: "Dependency-aware project delivery workspace for NodeWave.",
+  title: "NexusFlow Project Operations",
+description: "Dependency-aware project delivery workspace for NexusFlow.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

@@ -39,7 +39,7 @@ export default function LoginPage() {
   } = useForm<LoginValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: "pm@nodewave.local",
+      email: "pm@NEXUSFLOW.local",
       password: "Password123!",
     },
   });
@@ -92,7 +92,7 @@ export default function LoginPage() {
             </div>
             <div>
               <div className="text-xs font-bold tracking-[0.22em] text-cyan-300">
-                NODEWAVE
+                NEXUSFLOW
               </div>
               <div className="text-sm text-slate-400">Project Operations</div>
             </div>
@@ -177,7 +177,7 @@ export default function LoginPage() {
             </h2>
 
             <p className="mt-3 text-sm leading-6 text-slate-500">
-              Use your NodeWave account to access your assigned projects and
+              Use your NEXUSFLOW account to access your assigned projects and
               delivery workflow.
             </p>
           </div>
@@ -290,7 +290,7 @@ export default function LoginPage() {
           </Card>
 
           <p className="mt-6 text-center text-xs text-slate-400">
-            NodeWave Project Operations · Secure Workspace
+            NEXUSFLOW Project Operations · Secure Workspace
           </p>
         </div>
       </section>
